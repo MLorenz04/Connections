@@ -1,0 +1,24 @@
+{
+  "id": "xyads",
+  "creator": "Matyáš Lorenz",
+  "date": "2024-03-09T14:16:03.025Z",
+  "groups": [
+    {
+      "items": ["Prázdniny", "Kino", "Olympijské hry", "Čas"],
+      "explanation": "Co všechno může být 'Letní'"
+    },
+
+    {
+      "items": ["Přístup", "Hra", "Platba", "Zvuk"],
+      "explanation": "K čemu či jaká může být karta"
+    },
+    {
+      "items": ["Kajak", "Madam", "Nepochopen", "Krk"],
+      "explanation": "Palindromy"
+    },
+    {
+      "items": ["Blesk", "Metro", "Hospodář", "Seznam"],
+      "explanation": "Noviny"
+    }
+  ]
+}
