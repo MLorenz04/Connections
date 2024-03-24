@@ -16,8 +16,10 @@
     grid-template-columns: repeat(4, 1fr);
     min-height: 0;
     min-width: 0;
+    margin-bottom: 1rem;
 
     &-item {
+      transition: background-color, color 0.375s;
       width: 150px;
       height: 80px;
       background-color: rgb(239, 239, 230);
@@ -41,4 +43,43 @@
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
   }
+  .selected {
+    color: white;
+    background-color: rgb(36, 36, 36);
+  }
+  #buttons {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  
+    button {
+      width: 7.5rem;
+      height: 3rem;
+      padding: 0.75rem;
+      margin: 0 1rem;
+      
+      &:hover {
+        background-color: rgb(220, 217, 217);
+        color: black;
+        border: 1px solid black;
+        border-radius: 0.125rem;
+        cursor: pointer;
+      }
+    }
+  
+
+  }
+  .lives {
+    width:100%;
+    display:flex;
+    justify-content: center;
+    margin-bottom:1rem;
+  .life {
+    margin:0 1rem;
+    width:1rem;
+    height:1rem;
+    border-radius:0.5rem;
+    background-color:rgb(36, 36, 36);
+  }
+}
 }
