@@ -8,6 +8,21 @@
 #singleConPage h3 {
   text-align: center;
 }
+#singleConPage .error_message {
+  width: 6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1.75rem;
+  background-color: rgb(36, 35, 35);
+  color: white;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  top: 3.5rem;
+  margin: auto;
+  position: absolute;
+  z-index: 1;
+}
 #singleConPage .board {
   display: grid;
   gap: 8px;
@@ -76,4 +91,38 @@
   height: 1rem;
   border-radius: 0.5rem;
   background-color: rgb(36, 36, 36);
+}
+#singleConPage .solvedCategory {
+  width: 100%;
+  height: 5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+#singleConPage .solvedCategory-heading {
+  text-align: center;
+  margin: 0;
+  padding-top: 0.5rem;
+  font-weight: 800;
+}
+#singleConPage .solvedCategory-items {
+  display: flex;
+  justify-content: center;
+}
+#singleConPage .solvedCategory-items p {
+  margin-top: 0.5rem;
+}
+#singleConPage .solvedCategory-items-single {
+  padding: 0 0.5rem;
+}
+#singleConPage .--green {
+  background-color: rgb(160, 195, 90);
+}
+#singleConPage .--yellow {
+  background-color: rgb(249, 223, 109);
+}
+#singleConPage .--purple {
+  background-color: rgb(186, 129, 197);
+}
+#singleConPage .--blue {
+  background-color: rgb(176, 196, 239);
 }/*# sourceMappingURL=singleConnection.css.map */

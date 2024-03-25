@@ -11,6 +11,9 @@ export default function SingleConnection() {
   const [items, setItems] = useState([]);
   const [lives, setLives] = useState(4);
   const groups = useRef([]);
+  const color_classes = [
+    "yellow", "green", "blue", "purple"
+  ]
 
   const fetchConnection = async () => {
     const res = await axios.get(`${config.BASE_URL}/connection/${id}`);
@@ -20,6 +23,13 @@ export default function SingleConnection() {
   const { data, status } = useQuery(["connection", id], fetchConnection, {
     refetchOnWindowFocus: false,
   });
+
+  useEffect(() => {
+    if(lives == 0) {
+      alert("Prohra!");
+    }
+  }, [lives])
+
 
   useEffect(() => {
     if (data == undefined) return;
@@ -81,6 +91,7 @@ export default function SingleConnection() {
   return (
     !loading && (
       <div id="singleConPage">
+        <div className="error_message"> Tak blízko... </div>
         {status === "error" && <p>Chyba :(</p>}
         {status === "loading" && <p>Načítání...</p>}
         {status === "success" && (
@@ -88,11 +99,14 @@ export default function SingleConnection() {
             <h1> {data.creator} </h1>
             <h3> {data.date} </h3>
             <div className="solvedCategories">
-              {groups.current.map((group) => {
+              {groups.current.map((group,index) => {
                 if(group.solved) {
                   return (
-                    <div className="solvedCategory"> 
-                    <h5> {group.explanation} </h5>
+                    <div className={"solvedCategory --" + color_classes[group.id]}> 
+                    <h3 className="solvedCategory-heading"> {group.explanation} </h3>
+                    <div className="solvedCategory-items">
+                    <p> {group.items.map((item) => ( <span className="solvedCategory-items-single"> {item.toUpperCase()} </span>))}</p>
+                    </div>
                     </div>
                   )
                 }
