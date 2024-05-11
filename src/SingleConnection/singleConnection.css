@@ -9,15 +9,16 @@
   text-align: center;
 }
 #singleConPage .error_message {
-  width: 6rem;
+  opacity: 0;
+  text-align: center;
+  width: 10rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 1.75rem;
   background-color: rgb(36, 35, 35);
   color: white;
   border-radius: 0.25rem;
-  padding: 0.5rem;
+  padding: 1rem 0.5rem;
   top: 3.5rem;
   margin: auto;
   position: absolute;
@@ -34,7 +35,7 @@
   margin-bottom: 1rem;
 }
 #singleConPage .board-item {
-  transition: background-color, color 0.375s;
+  transition: background-color 0.275s, color 0.275s;
   width: 150px;
   height: 80px;
   background-color: rgb(239, 239, 230);
@@ -125,4 +126,41 @@
 }
 #singleConPage .--blue {
   background-color: rgb(176, 196, 239);
+}
+
+/* Animations */
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
 }/*# sourceMappingURL=singleConnection.css.map */

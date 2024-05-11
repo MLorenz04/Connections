@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import config from "../config/config";
 import "./singleConnection.css";
 import { useEffect, useRef, useState } from "react";
+import ErrorMessage from "./components/ErrorMess";
 
 export default function SingleConnection() {
   const { id } = useParams();
@@ -11,9 +12,10 @@ export default function SingleConnection() {
   const [items, setItems] = useState([]);
   const [lives, setLives] = useState(4);
   const groups = useRef([]);
-  const color_classes = [
-    "yellow", "green", "blue", "purple"
-  ]
+  const color_classes = ["yellow", "green", "blue", "purple"];
+  const tries = useRef([]);
+
+  const [errorMessage, setErrorMessage] = useState(".");
 
   const fetchConnection = async () => {
     const res = await axios.get(`${config.BASE_URL}/connection/${id}`);
@@ -25,11 +27,11 @@ export default function SingleConnection() {
   });
 
   useEffect(() => {
-    if(lives == 0) {
-      alert("Prohra!");
+    if (lives == 0) {
+      setErrorMessage("Prohra");
+      solveAll();
     }
-  }, [lives])
-
+  }, [lives]);
 
   useEffect(() => {
     if (data == undefined) return;
@@ -39,30 +41,33 @@ export default function SingleConnection() {
     let allItems = [];
     let id = 1;
     data.groups.forEach((group, index) => {
-      groups.current.push({...group, id: index, solved: false});
+      groups.current.push({ ...group, id: index, solved: false });
       group.items.map((item) => {
         allItems.push({ item: item, id: id, selected: false, group: index });
         id += 1;
-      })
-    }
-    );
+      });
+    });
 
     zamichatPole(allItems);
-    console.log(groups);
-    //zamichatPole(allItems);
     setLoading(false);
   }, [data]);
 
+  /**
+   * Vloží určitý vybraný prvek do pole vybraných prvů
+   * @param {*} item Prvek
+   */
   const insertIntoSelectedElements = (item) => {
     const copy = [...items];
-    if (item.selected === false)
-      if (copy.filter((obj) => obj.selected === true).length === 4) return;
+    if (item.selected === false) if (copy.filter((obj) => obj.selected === true).length === 4) return;
     const selectedItem = copy.find((single_item) => single_item === item);
     selectedItem.selected = !selectedItem.selected;
     setItems(copy);
   };
 
-
+  /**
+   * Náhodně zamíchá hrací plochu
+   * @param {*} pole - Hrací plocha
+   */
   function zamichatPole(pole) {
     let final = [...pole];
     for (let i = pole.length - 1; i > 0; i--) {
@@ -72,26 +77,38 @@ export default function SingleConnection() {
     setItems(final);
   }
 
+  /**
+   * Odešle ke kontrole prvky, případně vykreslí hlášky
+   */
   const submitCategory = () => {
-  
     const selectedItems = items.filter((item) => item.selected);
-    console.log(selectedItems);
-    if (
-      selectedItems.length === 4 &&
-      selectedItems.every((item) => item.group === selectedItems[0].group)
-    ) {
+
+    if (selectedItems.length != 4) return;
+
+    /* Kontrola již uhádnutých pokusů */
+    if (tries.current.some((pole) => JSON.stringify(pole) === JSON.stringify(selectedItems.map((item) => item.id).sort()))) return setErrorMessage("Již zkoušeno");
+
+    /* Kontrola blízkosti v tipu */
+    if (selectedItems.filter((item) => item.group === selectedItems[0].group).length === 3) setErrorMessage("Tak blízko...");
+
+    /* Kontrola správného uhádnutí */
+    tries.current.push(selectedItems.map((item) => item.id).sort());
+
+    if (selectedItems.every((item) => item.group === selectedItems[0].group)) {
       const newItems = items.filter((item) => !selectedItems.includes(item));
-      setItems(newItems);
       groups.current.find((group) => group.id === selectedItems[0].group).solved = true;
+      return setItems(newItems);
     }
-      
-    else setLives((prev) => prev - 1);
+
+    setLives((prev) => prev - 1);
   };
+
+  const solveAll = () => {};
 
   return (
     !loading && (
       <div id="singleConPage">
-        <div className="error_message"> Tak blízko... </div>
+        <ErrorMessage statusMsg={errorMessage} setFunc={setErrorMessage} />
         {status === "error" && <p>Chyba :(</p>}
         {status === "loading" && <p>Načítání...</p>}
         {status === "success" && (
@@ -99,51 +116,50 @@ export default function SingleConnection() {
             <h1> {data.creator} </h1>
             <h3> {data.date} </h3>
             <div className="solvedCategories">
-              {groups.current.map((group,index) => {
-                if(group.solved) {
+              {groups.current.map((group) => {
+                if (group.solved) {
                   return (
-                    <div className={"solvedCategory --" + color_classes[group.id]}> 
-                    <h3 className="solvedCategory-heading"> {group.explanation} </h3>
-                    <div className="solvedCategory-items">
-                    <p> {group.items.map((item) => ( <span className="solvedCategory-items-single"> {item.toUpperCase()} </span>))}</p>
+                    <div className={"solvedCategory --" + color_classes[group.id]}>
+                      <h3 className="solvedCategory-heading"> {group.explanation} </h3>
+                      <div className="solvedCategory-items">
+                        <p>
+                          {group.items.map((item) => (
+                            <span className="solvedCategory-items-single"> {item.toUpperCase()} </span>
+                          ))}
+                        </p>
+                      </div>
                     </div>
-                    </div>
-                  )
+                  );
                 }
               })}
-              </div>
-            <div class="board">
+            </div>
+            <div className="board">
               {items.map((item) => {
                 return (
-                  <label
-                    onClick={() => insertIntoSelectedElements(item)}
-                    className={
-                      "board-item " + (item.selected === true ? "selected" : "")
-                    }
-                    key={item.id}
-                    id={item.id}
-                  >
+                  <label onClick={() => insertIntoSelectedElements(item)} className={"board-item " + (item.selected === true ? "selected" : "")} key={item.id} id={item.id}>
                     <p>{item.item}</p>
                   </label>
                 );
               })}
             </div>
             <div className="lives">
-            {[...Array(lives)].map((e, i) => (
-        <div className="life" key={i}/>
-      ))}
+              {[...Array(lives)].map((e, i) => (
+                <div className="life" key={i} />
+              ))}
             </div>
             <section id="buttons">
-              <button onClick={() => zamichatPole(items)}> Zamíchat </button>
-              <button
-                onClick={() => {
-                  if (items.filter((item) => item.selected).length === 4)
-                    submitCategory();
-                }}
-              >
-                {" "}
-                Odeslat{" "}
-              </button>
+              {lives > 0 && items.length > 0 && (
+                <>
+                  <button onClick={() => zamichatPole(items)}> Zamíchat </button>
+                  <button
+                    onClick={() => {
+                      if (items.filter((item) => item.selected).length === 4) submitCategory();
+                    }}
+                  >
+                    Odeslat
+                  </button>
+                </>
+              )}
             </section>
           </div>
         )}
