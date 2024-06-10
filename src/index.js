@@ -4,8 +4,8 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import WelcomePage from "./WelcomePage/WelcomePage";
-import SingleConnection from "./SingleConnection/SingleConnection";
+import WelcomePage from "./Components/WelcomePage/WelcomePage";
+import Connection from "./Components/Connection/Connection";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -17,7 +17,7 @@ root.render(
       <React.StrictMode>
         <Routes>
           <Route path="/" element={<WelcomePage />}></Route>
-          <Route path="/connection/:id" element={<SingleConnection />}></Route>
+          <Route path="/connection/:id" element={<Connection />}></Route>
         </Routes>
       </React.StrictMode>
     </BrowserRouter>

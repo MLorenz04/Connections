@@ -1,0 +1,24 @@
+{
+  "id": "trapy",
+  "creator": "Anna Lorenzová",
+  "date": "2024-03-09T14:16:03.025Z",
+  "groups": [
+    {
+      "items": ["Můj", "Květ", "Šumí", "Krásná"],
+      "explanation": "Slova v české hymně"
+    },
+
+    {
+      "items": ["Mars", "Hrášek", "Korálek", "Míč"],
+      "explanation": "Kulaté objekty"
+    },
+    {
+      "items": ["Kráva", "Jelito", "Husa", "Tupý"],
+      "explanation": "Nadávky"
+    },
+    {
+      "items": ["Drn", "Obraz", "Tlak", "Vliv"],
+      "explanation": "Pod čím člověk může být"
+    }
+  ]
+}

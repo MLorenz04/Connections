@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
-import config from "../config/config";
-import "./singleConnection.css";
+import config from "../../config/config";
+import "./connection.css";
 import { useEffect, useRef, useState } from "react";
-import ErrorMessage from "./components/ErrorMess";
+import ErrorMessage from "../Connection/components/ErrorMess";
 
-export default function SingleConnection() {
-  const { id } = useParams();
+export default function Connection({ id }) {
   const [loading, setLoading] = useState();
   const [items, setItems] = useState([]);
   const [lives, setLives] = useState(4);
@@ -18,7 +16,7 @@ export default function SingleConnection() {
   const [errorMessage, setErrorMessage] = useState(".");
 
   const fetchConnection = async () => {
-    const res = await axios.get(`${config.BASE_URL}/connection/${id}`);
+    const res = await axios.get(`${config.BASE_URL}/api/connection/${id}`);
     return res.data;
   };
 
@@ -77,6 +75,8 @@ export default function SingleConnection() {
     setItems(final);
   }
 
+  function changeElements() {}
+
   /**
    * Odešle ke kontrole prvky, případně vykreslí hlášky
    */
@@ -113,8 +113,6 @@ export default function SingleConnection() {
         {status === "loading" && <p>Načítání...</p>}
         {status === "success" && (
           <div>
-            <h1> {data.creator} </h1>
-            <h3> {data.date} </h3>
             <div className="solvedCategories">
               {groups.current.map((group) => {
                 if (group.solved) {
