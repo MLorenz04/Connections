@@ -21,21 +21,22 @@ export default function Connection({ id }) {
   };
 
   const { data, status } = useQuery(["connection", id], fetchConnection, {
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: "always",
   });
 
   useEffect(() => {
     if (lives == 0) {
-      setErrorMessage("Prohra");
+      setErrorMessage("Tak snad příště!");
       solveAll();
     }
   }, [lives]);
 
   useEffect(() => {
+    console.log(data);
     if (data == undefined) return;
     const date = new Date(data.date);
     data.date = `${date.getDay()}. ${date.getMonth()}. ${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}`;
-
+    console.log(data.date);
     let allItems = [];
     let id = 1;
     data.groups.forEach((group, index) => {
@@ -101,66 +102,71 @@ export default function Connection({ id }) {
     }
 
     setLives((prev) => prev - 1);
+    return setErrorMessage("Samá voda...");
   };
 
   const solveAll = () => {};
 
   return (
     !loading && (
-      <div id="singleConPage">
-        <ErrorMessage statusMsg={errorMessage} setFunc={setErrorMessage} />
-        {status === "error" && <p>Chyba :(</p>}
-        {status === "loading" && <p>Načítání...</p>}
-        {status === "success" && (
-          <div>
-            <div className="solvedCategories">
-              {groups.current.map((group) => {
-                if (group.solved) {
-                  return (
-                    <div className={"solvedCategory --" + color_classes[group.id]}>
-                      <h3 className="solvedCategory-heading"> {group.explanation} </h3>
-                      <div className="solvedCategory-items">
-                        <p>
-                          {group.items.map((item) => (
-                            <span className="solvedCategory-items-single"> {item.toUpperCase()} </span>
-                          ))}
-                        </p>
+      <div>
+        <div id="singleConPage">
+          <ErrorMessage statusMsg={errorMessage} setFunc={setErrorMessage} />
+          {status === "error" && <p>Chyba :(</p>}
+          {status === "loading" && <p>Načítání...</p>}
+          {status === "success" && (
+            <div>
+              <h2> {data.creator} </h2>
+              <h4> {data.date} </h4>
+              <div className="solvedCategories">
+                {groups.current.map((group) => {
+                  if (group.solved) {
+                    return (
+                      <div className={"solvedCategory --" + color_classes[group.id]}>
+                        <h3 className="solvedCategory-heading"> {group.explanation.toUpperCase()} </h3>
+                        <div className="solvedCategory-items">
+                          <p>
+                            {group.items.map((item) => (
+                              <span className="solvedCategory-items-single"> {item.toUpperCase()} </span>
+                            ))}
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    );
+                  }
+                })}
+              </div>
+              <div className="board">
+                {items.map((item) => {
+                  return (
+                    <label onClick={() => insertIntoSelectedElements(item)} className={"board-item " + (item.selected === true ? "selected" : "")} key={item.id} id={item.id}>
+                      <p>{item.item}</p>
+                    </label>
                   );
-                }
-              })}
+                })}
+              </div>
+              <div className="lives">
+                {[...Array(lives)].map((e, i) => (
+                  <div className="life" key={i} />
+                ))}
+              </div>
+              <section id="buttons">
+                {lives > 0 && items.length > 0 && (
+                  <>
+                    <button onClick={() => zamichatPole(items)}> Zamíchat </button>
+                    <button
+                      onClick={() => {
+                        if (items.filter((item) => item.selected).length === 4) submitCategory();
+                      }}
+                    >
+                      Odeslat
+                    </button>
+                  </>
+                )}
+              </section>
             </div>
-            <div className="board">
-              {items.map((item) => {
-                return (
-                  <label onClick={() => insertIntoSelectedElements(item)} className={"board-item " + (item.selected === true ? "selected" : "")} key={item.id} id={item.id}>
-                    <p>{item.item}</p>
-                  </label>
-                );
-              })}
-            </div>
-            <div className="lives">
-              {[...Array(lives)].map((e, i) => (
-                <div className="life" key={i} />
-              ))}
-            </div>
-            <section id="buttons">
-              {lives > 0 && items.length > 0 && (
-                <>
-                  <button onClick={() => zamichatPole(items)}> Zamíchat </button>
-                  <button
-                    onClick={() => {
-                      if (items.filter((item) => item.selected).length === 4) submitCategory();
-                    }}
-                  >
-                    Odeslat
-                  </button>
-                </>
-              )}
-            </section>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     )
   );

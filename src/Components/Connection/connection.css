@@ -5,7 +5,8 @@
   justify-content: center;
 }
 #singleConPage h1,
-#singleConPage h3 {
+#singleConPage h2 h3,
+#singleConPage h4 {
   text-align: center;
 }
 #singleConPage .error_message {
@@ -39,6 +40,7 @@
   width: 150px;
   height: 80px;
   background-color: rgb(239, 239, 230);
+  transition: background-color 0.2s;
   color: rgb(0, 0, 0);
   z-index: 0;
   overflow: hidden;
@@ -57,6 +59,9 @@
   -webkit-user-select: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+#singleConPage .board-item:hover:not(.selected) {
+  background-color: rgb(221, 221, 207);
 }
 #singleConPage .selected {
   color: white;
@@ -113,7 +118,8 @@
   margin-top: 0.5rem;
 }
 #singleConPage .solvedCategory-items-single {
-  padding: 0 0.5rem;
+  font-size: 1.125rem;
+  padding: 0 0.25rem;
 }
 #singleConPage .--green {
   background-color: rgb(160, 195, 90);
@@ -165,4 +171,4 @@
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
   }
-}/*# sourceMappingURL=singleConnection.css.map */
+}/*# sourceMappingURL=connection.css.map */

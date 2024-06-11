@@ -1,14 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import WelcomePage from "./Components/WelcomePage/WelcomePage";
-import Connection from "./Components/Connection/Connection";
 import { QueryClient, QueryClientProvider } from "react-query";
+import SingleConnection from "./Components/SingleConnection/SingleConnection";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
+const randomGen = () => {
+  console.log("test");
+};
 
 const queryClient = new QueryClient();
 root.render(
@@ -16,8 +19,8 @@ root.render(
     <BrowserRouter>
       <React.StrictMode>
         <Routes>
-          <Route path="/" element={<WelcomePage />}></Route>
-          <Route path="/connection/:id" element={<Connection />}></Route>
+          <Route path="/" element={<WelcomePage />} />
+          <Route path="/connection/:id" element={<SingleConnection />} />
         </Routes>
       </React.StrictMode>
     </BrowserRouter>

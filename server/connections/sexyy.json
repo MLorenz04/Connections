@@ -1,0 +1,24 @@
+{
+  "id": "trapy",
+  "creator": "František Lorenz",
+  "date": "2024-03-09T14:16:03.025Z",
+  "groups": [
+    {
+      "items": ["Permafrost", "Ex", "Ráček", "Vině"],
+      "explanation": "Slova začínající nadávkou bez písmene 'S'"
+    },
+
+    {
+      "items": ["Větrák", "Deska", "Paměť", "Skříň"],
+      "explanation": "Části počítače"
+    },
+    {
+      "items": ["Knihtisk", "Seismograf", "Kompas", "Porcelán"],
+      "explanation": "Čínské vynálezy"
+    },
+    {
+      "items": ["Dort", "Panáček", "Domeček", "Táta"],
+      "explanation": "Co může být 'Perníkové'"
+    }
+  ]
+}

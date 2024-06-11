@@ -5,9 +5,11 @@ export default function WelcomePage() {
   return (
     <div id="welcome-page">
       <Navbar />
-      <h2> Dnešní hádanka </h2>
+      <section id="welcome-page__content">
+        <h2> Dnešní hádanka </h2>
 
-      <Connection id="daily"></Connection>
+        <Connection id="daily"></Connection>
+      </section>
     </div>
   );
 }

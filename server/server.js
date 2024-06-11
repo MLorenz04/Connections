@@ -40,6 +40,22 @@ app.get("/api/connection/daily", (req, res) => {
   }
 });
 
+app.get("/api/connection/random", (req, res) => {
+  const directoryPath = path.join(__dirname, "connections");
+
+  fs.readdir(directoryPath, (err, files) => {
+    if (err) return res.status(500).send("Chyba při čtení adresáře");
+
+    const jsonFiles = files.filter((file) => file.endsWith(".json"));
+
+    if (jsonFiles.length === 0) return res.status(404).send("Žádné soubory nenalezeny");
+
+    const randomFile = jsonFiles[Math.floor(Math.random() * jsonFiles.length)];
+    const filePath = path.join(directoryPath, randomFile);
+
+    res.sendFile(filePath);
+  });
+});
 app.get("/api/connection/:id", (req, res) => {
   const fileId = req.params.id;
   const filePath = path.join(__dirname, "connections", fileId) + ".json";

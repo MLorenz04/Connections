@@ -1,20 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./navbar.css";
 export default function Navbar() {
   return (
     <nav>
       <ul>
         <li>
-          <Link href="/create">Vytvořit </Link>
+          <Link to="/create">Vytvořit </Link>
         </li>
         <li>
-          <Link href="/random">Náhodné</Link>
+          <Link to="/connection/random">Náhodné</Link>
+        </li>
+
+        <li>
+          <Link to="/connection/daily">Dnešní</Link>
         </li>
         <li>
-          <Link href="/random">Dnešní</Link>
-        </li>
-        <li>
-          <Link href="/random">Vyhledat</Link>
+          <Link to="/random">Vyhledat</Link>
         </li>
       </ul>
     </nav>
