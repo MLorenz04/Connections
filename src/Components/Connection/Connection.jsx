@@ -21,7 +21,7 @@ export default function Connection({ id }) {
   };
 
   const { data, status } = useQuery(["connection", id], fetchConnection, {
-    refetchOnWindowFocus: "always",
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
@@ -32,11 +32,9 @@ export default function Connection({ id }) {
   }, [lives]);
 
   useEffect(() => {
-    console.log(data);
     if (data == undefined) return;
     const date = new Date(data.date);
     data.date = `${date.getDay()}. ${date.getMonth()}. ${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}`;
-    console.log(data.date);
     let allItems = [];
     let id = 1;
     data.groups.forEach((group, index) => {
@@ -75,13 +73,22 @@ export default function Connection({ id }) {
     }
     setItems(final);
   }
-
+  /**
+   * Pokud jsou aktivní čtyři prvky, odebere první prvek, posune všechny o jeden dopředu a poté přidá pátý, aktuálně kliknutý
+   */
   function changeElements() {}
+
+  /**
+   * Funkce na threshold
+   */
+  function wait(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 
   /**
    * Odešle ke kontrole prvky, případně vykreslí hlášky
    */
-  const submitCategory = () => {
+  const submitCategory = async () => {
     const selectedItems = items.filter((item) => item.selected);
 
     if (selectedItems.length != 4) return;
@@ -89,11 +96,29 @@ export default function Connection({ id }) {
     /* Kontrola již uhádnutých pokusů */
     if (tries.current.some((pole) => JSON.stringify(pole) === JSON.stringify(selectedItems.map((item) => item.id).sort()))) return setErrorMessage("Již zkoušeno");
 
-    /* Kontrola blízkosti v tipu */
-    if (selectedItems.filter((item) => item.group === selectedItems[0].group).length === 3) setErrorMessage("Tak blízko...");
-
     /* Kontrola správného uhádnutí */
     tries.current.push(selectedItems.map((item) => item.id).sort());
+    let numerator = 100;
+    let waitForRemove = 450;
+    let timeForRunAndDramaticPause = 150;
+    let threshold = 0;
+
+    async function makeAnimation() {
+      for (let i = 0; i < selectedItems.length; i++) {
+        const item = document.getElementById(selectedItems[i].id);
+        setTimeout(() => {
+          item.classList.add("jump-up");
+          setTimeout(() => {
+            item.classList.remove("jump-up");
+          }, waitForRemove);
+        }, threshold);
+
+        threshold += numerator;
+      }
+      await wait(numerator * 4 + waitForRemove + timeForRunAndDramaticPause);
+    }
+
+    await makeAnimation();
 
     if (selectedItems.every((item) => item.group === selectedItems[0].group)) {
       const newItems = items.filter((item) => !selectedItems.includes(item));
@@ -101,7 +126,16 @@ export default function Connection({ id }) {
       return setItems(newItems);
     }
 
+    for (let i = 0; i < selectedItems.length; i++) {
+      const item = document.getElementById(selectedItems[i].id);
+      item.classList.add("shake");
+      setTimeout(() => item.classList.remove("shake"), 400);
+    }
     setLives((prev) => prev - 1);
+
+    /* Kontrola blízkosti v tipu */
+    if (selectedItems.filter((item) => item.group === selectedItems[0].group).length === 3) return setErrorMessage("Tak blízko...");
+
     return setErrorMessage("Samá voda...");
   };
 
@@ -126,8 +160,10 @@ export default function Connection({ id }) {
                         <h3 className="solvedCategory-heading"> {group.explanation.toUpperCase()} </h3>
                         <div className="solvedCategory-items">
                           <p>
-                            {group.items.map((item) => (
-                              <span className="solvedCategory-items-single"> {item.toUpperCase()} </span>
+                            {group.items.map((item, key) => (
+                              <span key={key} className="solvedCategory-items-single">
+                                {item.toUpperCase()}
+                              </span>
                             ))}
                           </p>
                         </div>

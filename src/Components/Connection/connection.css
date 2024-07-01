@@ -67,6 +67,12 @@
   color: white;
   background-color: rgb(36, 36, 36);
 }
+#singleConPage .shake {
+  animation: shake 0.8s;
+}
+#singleConPage .jump-up {
+  animation: jumpUp linear 0.25s;
+}
 #singleConPage #buttons {
   display: flex;
   width: 100%;
@@ -107,8 +113,7 @@
 #singleConPage .solvedCategory-heading {
   text-align: center;
   margin: 0;
-  padding-top: 0.5rem;
-  font-weight: 800;
+  padding-top: 0.75rem;
 }
 #singleConPage .solvedCategory-items {
   display: flex;
@@ -135,7 +140,17 @@
 }
 
 /* Animations */
-@keyframes jumpUp {}
+@keyframes jumpUp {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  25%, 75% {
+    transform: translateY(-6px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
 @keyframes flyToPosition {}
 @keyframes shake {
   0% {
