@@ -4,7 +4,6 @@ import "./welcomepage.css";
 export default function WelcomePage() {
   return (
     <div id="welcome-page">
-      <Navbar />
       <section id="welcome-page__content">
         <h2> Dnešní hádanka </h2>
 
