@@ -14,9 +14,6 @@ export default function Navbar() {
         <li>
           <Link to="/connection/daily">Dnešní</Link>
         </li>
-        <li>
-          <Link to="/random">Vyhledat</Link>
-        </li>
       </ul>
     </nav>
   );

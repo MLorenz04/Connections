@@ -1,3 +1,7 @@
+import { useState } from "react";
+
 export default function EditBox() {
-  return <input className="editbox"></input>;
+  const [value, setValue] = useState();
+
+  return <input value={value} onChange={(e) => setValue(e.target.value)} className="editbox"></input>;
 }

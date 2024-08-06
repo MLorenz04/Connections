@@ -1,0 +1,46 @@
+{
+  "id": "Cr6rL2d8h48cIk6X27t5",
+  "creator": "Anna Lorenzová",
+  "date": "2024-07-06T18:32:27.354Z",
+  "groups": [
+    {
+      "explanation": "Zákazy",
+      "items": [
+        "Vjezd",
+        "Stání",
+        "Kouření",
+        "Vstup"
+      ]
+    },
+    {
+      "explanation": "Klíčové prvky Červené karkulky",
+      "items": [
+        "Červená",
+        "Les",
+        "Košík",
+        "Vlk"
+      ]
+    },
+    {
+      "explanation": "Šachové termíny",
+      "items": [
+        "Pole",
+        "Kůň",
+        "Tah",
+        "Bílý"
+      ]
+    },
+    {
+      "explanation": "Části názvů Harryho Pottera",
+      "items": [
+        "Vězeň",
+        "Princ",
+        "Kámen",
+        "Pohár"
+      ]
+    }
+  ],
+  "settings": {
+    "color": "#bed3f3"
+  }
+}

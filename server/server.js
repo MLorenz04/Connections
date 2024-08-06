@@ -5,12 +5,17 @@ const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
 const cron = require("node-cron");
+const bodyParser = require("body-parser");
 
 const corsOptions = {
   origin: "http://localhost:3000", // Povolí pouze požadavky z tohoto původu
 };
 
 app.use(cors(corsOptions));
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -66,6 +71,45 @@ app.get("/api/connection/:id", (req, res) => {
   } else {
     res.status(404).send("Hádanka nenalezena :(");
   }
+});
+app.post("/api/connection", async (req, res) => {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  function generateId() {
+    let id = "";
+    for (let i = 0; i < 20; i++) {
+      id += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return id;
+  }
+
+  let id = generateId();
+
+  const filePath = (id) => path.join(__dirname, `connections/${id}.json`);
+  while (fs.existsSync(filePath(id))) id = generateId();
+
+  const { groups, settings } = req.body;
+  if (settings?.username.length == 0) return res.status(400).send("Omlouváme se, pane Tajemný, ale je potřebné vyplnit vaše jméno či přezdívku");
+  console.log(groups);
+  for (let i = 0; i < groups.length; i++) {
+    const group = groups[i];
+    if (group.explanation.length === 0) return res.status(400).send("Doplňte prosím všechna vysvětlení");
+    if (group.items.find((item) => item.length === 0) !== undefined) return res.status(400).send("Doplňte prosím všechna slova");
+  }
+
+  const finalObjects = {
+    id,
+    creator: settings.username,
+    date: new Date(),
+    groups,
+    settings: {
+      color: settings.color,
+    },
+  };
+
+  //fs.writeFileSync(filePath(id), JSON.stringify(finalObjects, null, 2), "utf8");
+
+  res.status(200).send(id);
 });
 
 app.listen(port, () => {

@@ -75,7 +75,6 @@ export default function Connection({ id }) {
 
     zamichatPole(allItems);
     setLoading(false);
-    console.log("Měním");
   }, [data]);
 
   /**
@@ -270,54 +269,54 @@ export default function Connection({ id }) {
 
   return (
     !loading && (
-      <div>
+      <div id="single-connection" style={{ backgroundColor: data?.settings?.color }}>
         <ConfettiCanvas isActive={solved} />
-        <div id="single-connection">
-          <ErrorMessage statusMsg={errorMessage} setFunc={setErrorMessage} />
-          {status === "error" && <p>Chyba :(</p>}
-          {status === "loading" && <p>Načítání...</p>}
-          {status === "success" && (
-            <div id="single-connection__container">
-              <LuHelpCircle className="help-icon" onClick={() => showModal()} />
-              <h2> {data.creator} </h2>
-              <h4> {data.date} </h4>
-              <div className="solvedCategories">
-                {solvedCategories.map((group) => {
-                  return (
-                    <div key={group.id} className={"solvedCategory --" + color_classes[group.id]}>
-                      <h3 className="solvedCategory-heading">{group.explanation.toUpperCase()}</h3>
-                      <div className="solvedCategory-items">
-                        <p>
-                          {group.items.map((item, key) => (
-                            <span key={key} className="solvedCategory-items-single">
-                              {item.toUpperCase()}
-                            </span>
-                          ))}
-                        </p>
-                      </div>
+        <ErrorMessage statusMsg={errorMessage} setFunc={setErrorMessage} />
+        {status === "error" && <p>Chyba :(</p>}
+        {status === "loading" && <p>Načítání...</p>}
+        {status === "success" && (
+          <div id="single-connection__container">
+            <LuHelpCircle className="help-icon" onClick={() => showModal()} />
+            <h2> {data.creator} </h2>
+            <h4> {data.date} </h4>
+            <div className="solvedCategories">
+              {solvedCategories.map((group) => {
+                return (
+                  <div key={group.id} className={"solvedCategory --" + color_classes[group.id]}>
+                    <h3 className="solvedCategory-heading">{group.explanation.toUpperCase()}</h3>
+                    <div className="solvedCategory-items">
+                      <p>
+                        {group.items.map((item, key) => (
+                          <span key={key} className="solvedCategory-items-single">
+                            {item.toUpperCase()}
+                          </span>
+                        ))}
+                      </p>
                     </div>
+                  </div>
+                );
+              })}
+            </div>
+            <FlipMove className="board">
+              {items
+                .filter((item) => !item.solved)
+                .map((item) => {
+                  return (
+                    <label onClick={() => insertIntoSelectedElements(item)} className={"board-item " + (item.selected === true ? "selected" : "")} key={item.id} id={item.id}>
+                      <p>{item.item}</p>
+                    </label>
                   );
                 })}
-              </div>
-              <FlipMove className="board">
-                {items
-                  .filter((item) => !item.solved)
-                  .map((item) => {
-                    return (
-                      <label onClick={() => insertIntoSelectedElements(item)} className={"board-item " + (item.selected === true ? "selected" : "")} key={item.id} id={item.id}>
-                        <p>{item.item}</p>
-                      </label>
-                    );
-                  })}
-              </FlipMove>
-              <div className="lives">
-                {[...Array(lives)].map((e, i) => (
-                  <div className="life" key={i} />
-                ))}
-              </div>
-              <section id="buttons">
-                {shouldShowButtons == true && (
-                  <>
+            </FlipMove>
+            <div className="lives">
+              {[...Array(lives)].map((e, i) => (
+                <div className="life" key={i} />
+              ))}
+            </div>
+            <section id="buttons">
+              {shouldShowButtons == true && (
+                <>
+                  <div>
                     <button onClick={() => zamichatPole(items)}> Zamíchat </button>
                     <button
                       onClick={() => {
@@ -326,13 +325,13 @@ export default function Connection({ id }) {
                     >
                       Odeslat
                     </button>
-                    <button onClick={() => setLives(0)}> Vyřešit </button>
-                  </>
-                )}
-              </section>
-            </div>
-          )}
-        </div>
+                  </div>
+                  <button onClick={() => setLives(0)}> Vyřešit </button>
+                </>
+              )}
+            </section>
+          </div>
+        )}
       </div>
     )
   );

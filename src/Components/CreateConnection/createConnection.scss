@@ -18,17 +18,18 @@
   padding: 1rem;
   margin: 0.5rem;
   border-radius: 0.5rem;
+  border: 1px solid gray;
 
   &__heading {
     width: 20rem;
     height: 2rem;
     margin-bottom: 1rem;
-    border: none;
+    border: 1px solid gray;
     border-radius: 0.25rem;
-    border-color: white;
     text-align: center;
   }
 }
+
 .create-connection {
   width: 100%;
   height: calc(100% - 1.75rem);
@@ -51,11 +52,18 @@
 
     * {
       margin: 0.25rem;
+      max-width: 200px;
     }
 
     input {
       height: 1.5rem;
     }
+  }
+  &__submit {
+    margin-top: 3rem;
+    width: 8rem;
+    height: 2.5rem;
+    font-size: 1rem;
   }
   &__inputs {
     width: 100%;
