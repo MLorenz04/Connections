@@ -9,6 +9,11 @@
   border-radius: 0.5rem;
   background-color: rgb(239, 239, 230);
 }
+@media screen and (max-width: 1300px) {
+  .editbox {
+    margin: 0.25rem 1rem;
+  }
+}
 
 .create-category {
   display: flex;
@@ -21,7 +26,7 @@
   border: 1px solid gray;
 }
 .create-category__heading {
-  width: 20rem;
+  max-width: 20rem;
   height: 2rem;
   margin-bottom: 1rem;
   border: 1px solid gray;
@@ -41,6 +46,12 @@
   width: 80%;
   display: flex;
 }
+@media screen and (max-width: 650px) {
+  .create-connection__container {
+    width: 80%;
+    display: block;
+  }
+}
 .create-connection__settings {
   text-align: center;
   width: 30rem;
@@ -49,6 +60,12 @@
   flex-direction: column;
   align-items: center;
 }
+@media screen and (max-width: 650px) {
+  .create-connection__settings {
+    width: 100%;
+    flex-direction: column;
+  }
+}
 .create-connection__settings * {
   margin: 0.25rem;
   max-width: 200px;
@@ -56,11 +73,45 @@
 .create-connection__settings input {
   height: 1.5rem;
 }
+.create-connection__settings__options {
+  width: 100%;
+}
+@media screen and (max-width: 650px) {
+  .create-connection__settings__options {
+    display: flex;
+    max-width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+}
+@media screen and (max-width: 1300px) {
+  .create-connection__settings__options {
+    flex-direction: column;
+  }
+}
 .create-connection__submit {
   margin-top: 3rem;
   width: 8rem;
   height: 2.5rem;
   font-size: 1rem;
+}
+@media screen and (max-width: 650px) {
+  .create-connection__submit {
+    display: none;
+  }
+}
+.create-connection__submit2 {
+  display: none;
+}
+@media screen and (max-width: 650px) {
+  .create-connection__submit2 {
+    display: block;
+    width: 8rem;
+    height: 2.5rem;
+    font-size: 1rem;
+    margin: auto;
+    margin-top: 1rem;
+  }
 }
 .create-connection__inputs {
   width: 100%;

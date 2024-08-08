@@ -241,7 +241,15 @@ export default function Connection({ id }) {
     }
 
     await makeAnimation();
-    if (selectedItems.filter((item) => item.group === selectedItems[0].group).length === 3) {
+
+    /* Kontrola, jestli nemá objekt tři společné prvky */
+    const values = selectedItems.map((item) => item.group);
+    let valueCounts = values.reduce((counts, value) => {
+      counts[value] = (counts[value] || 0) + 1;
+      return counts;
+    }, {});
+
+    if (Object.values(valueCounts).some((count) => count == 3)) {
       setLives((prev) => prev - 1);
       return setErrorMessage("Tak blízko...");
     }
@@ -277,37 +285,42 @@ export default function Connection({ id }) {
         {status === "success" && (
           <div id="single-connection__container">
             <LuHelpCircle className="help-icon" onClick={() => showModal()} />
-            <h2> {data.creator} </h2>
+            <h2>
+              {" "}
+              {data.creator} <LuHelpCircle className="help-icon2" onClick={() => showModal()} />{" "}
+            </h2>
             <h4> {data.date} </h4>
-            <div className="solvedCategories">
-              {solvedCategories.map((group) => {
-                return (
-                  <div key={group.id} className={"solvedCategory --" + color_classes[group.id]}>
-                    <h3 className="solvedCategory-heading">{group.explanation.toUpperCase()}</h3>
-                    <div className="solvedCategory-items">
-                      <p>
-                        {group.items.map((item, key) => (
-                          <span key={key} className="solvedCategory-items-single">
-                            {item.toUpperCase()}
-                          </span>
-                        ))}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <FlipMove className="board">
-              {items
-                .filter((item) => !item.solved)
-                .map((item) => {
+            <div className="board-container">
+              <div className="solvedCategories">
+                {solvedCategories.map((group) => {
                   return (
-                    <label onClick={() => insertIntoSelectedElements(item)} className={"board-item " + (item.selected === true ? "selected" : "")} key={item.id} id={item.id}>
-                      <p>{item.item}</p>
-                    </label>
+                    <div key={group.id} className={"solvedCategory --" + color_classes[group.id]}>
+                      <h3 className="solvedCategory-heading">{group.explanation.toUpperCase()}</h3>
+                      <div className="solvedCategory-items">
+                        <p>
+                          {group.items.map((item, key) => (
+                            <span key={key} className="solvedCategory-items-single">
+                              {item.toUpperCase()}
+                            </span>
+                          ))}
+                        </p>
+                      </div>
+                    </div>
                   );
                 })}
-            </FlipMove>
+              </div>
+              <FlipMove className="board">
+                {items
+                  .filter((item) => !item.solved)
+                  .map((item) => {
+                    return (
+                      <label onClick={() => insertIntoSelectedElements(item)} className={"board-item " + (item.selected === true ? "selected" : "")} key={item.id} id={item.id}>
+                        <p>{item.item}</p>
+                      </label>
+                    );
+                  })}
+              </FlipMove>
+            </div>
             <div className="lives">
               {[...Array(lives)].map((e, i) => (
                 <div className="life" key={i} />

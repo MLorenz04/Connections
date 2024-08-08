@@ -56,18 +56,23 @@ export default function CreateConnection({ id }) {
       <h1> Vytvořit </h1>
       <div className="create-connection__container">
         <div className="create-connection__settings">
-          <label for="jmeno">Jméno autora</label>
-          <input type="text" onChange={(e) => changeSettings("username", e.target.value)}></input>
-          <label>
-            Barva pozadí
-            <GithubPicker
-              width={"170px"}
-              triangle={"hide"}
-              colors={["#fff", "#fabf96", "#EB9694", "#FAD0C3", "#FEF3BD", "#C1E1C5", "#BEDADC", "#C4DEF6", "#BED3F3", "#D4C4FB"]}
-              onChange={(e) => changeSettings("color", e.hex)}
-            />
-          </label>
-
+          <div className="create-connection__settings__options">
+            <div>
+              <label for="jmeno">Jméno autora</label>
+              <input type="text" onChange={(e) => changeSettings("username", e.target.value)}></input>
+            </div>
+            <div>
+              <label>
+                Barva pozadí
+                <GithubPicker
+                  width={"170px"}
+                  triangle={"hide"}
+                  colors={["#fff", "#fabf96", "#EB9694", "#FAD0C3", "#FEF3BD", "#C1E1C5", "#BEDADC", "#C4DEF6", "#BED3F3", "#D4C4FB"]}
+                  onChange={(e) => changeSettings("color", e.hex)}
+                />
+              </label>{" "}
+            </div>
+          </div>
           <button onClick={submit} className="create-connection__submit">
             Vytvořit
           </button>
@@ -79,6 +84,10 @@ export default function CreateConnection({ id }) {
           <CreateCategory id={"category-2"} className={"--blue"} />
           <CreateCategory id={"category-3"} className={"--purple"} />
         </div>
+
+        <button onClick={submit} className="create-connection__submit2">
+          Vytvořit
+        </button>
       </div>
     </div>
   );

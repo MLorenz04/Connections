@@ -8,6 +8,10 @@
   border: none;
   border-radius: 0.5rem;
   background-color: rgb(239, 239, 230);
+
+  @media screen and (max-width: 1300px) {
+    margin: 0.25rem 1rem;
+  }
 }
 
 .create-category {
@@ -21,7 +25,7 @@
   border: 1px solid gray;
 
   &__heading {
-    width: 20rem;
+    max-width: 20rem;
     height: 2rem;
     margin-bottom: 1rem;
     border: 1px solid gray;
@@ -41,6 +45,11 @@
   &__container {
     width: 80%;
     display: flex;
+
+    @media screen and (max-width: 650px) {
+      width: 80%;
+      display: block;
+    }
   }
   &__settings {
     text-align: center;
@@ -50,6 +59,11 @@
     flex-direction: column;
     align-items: center;
 
+    @media screen and (max-width: 650px) {
+      width: 100%;
+      flex-direction: column;
+    }
+
     * {
       margin: 0.25rem;
       max-width: 200px;
@@ -58,13 +72,44 @@
     input {
       height: 1.5rem;
     }
+
+    &__options {
+      width: 100%;
+      @media screen and (max-width: 650px) {
+        display: flex;
+        max-width: 100%;
+        justify-content: center;
+        align-items: center;
+      }
+
+      @media screen and (max-width: 1300px) {
+        flex-direction: column;
+      }
+    }
   }
   &__submit {
     margin-top: 3rem;
     width: 8rem;
     height: 2.5rem;
     font-size: 1rem;
+
+    @media screen and (max-width: 650px) {
+      display: none;
+    }
   }
+
+  &__submit2 {
+    display: none;
+    @media screen and (max-width: 650px) {
+      display: block;
+      width: 8rem;
+      height: 2.5rem;
+      font-size: 1rem;
+      margin: auto;
+      margin-top: 1rem;
+    }
+  }
+
   &__inputs {
     width: 100%;
     display: flex;
