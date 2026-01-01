@@ -26,8 +26,11 @@ export default function Connection({ id }) {
 
   const [errorMessage, setErrorMessage] = useState(".");
 
+  console.log(id);
   const fetchConnection = async () => {
-    const res = await axios.get(`${config.BASE_URL}/api/connection/${id}`);
+    const res = await axios.get(`${config.BASE_URL}/api/connections`, {
+      params: { id },
+    });
     return res.data;
   };
 
@@ -62,13 +65,21 @@ export default function Connection({ id }) {
   useEffect(() => {
     if (data == undefined) return;
     const date = new Date(data.date);
-    data.date = `${date.getDay()}. ${date.getMonth()}. ${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}`;
+    data.date = `${date.getDate()}. ${
+      date.getMonth() + 1
+    }. ${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}`;
     let allItems = [];
     let id = 1;
     data.groups.forEach((group, index) => {
       groups.current.push({ ...group, id: index, solved: false });
       group.items.map((item) => {
-        allItems.push({ item: item, id: id, selected: false, group: index, solved: false });
+        allItems.push({
+          item: item,
+          id: id,
+          selected: false,
+          group: index,
+          solved: false,
+        });
         id += 1;
       });
     });
@@ -83,11 +94,15 @@ export default function Connection({ id }) {
    */
   const insertIntoSelectedElements = (item) => {
     const copy = [...items];
-    if (item.selected === false) if (copy.filter((obj) => obj.selected === true).length === 4) return changeElements(item);
+    if (item.selected === false)
+      if (copy.filter((obj) => obj.selected === true).length === 4)
+        return changeElements(item);
     const selectedItem = copy.find((single_item) => single_item === item);
     selectedItem.selected = !selectedItem.selected;
     if (selectedElements.find((existingItem) => existingItem.id == item.id)) {
-      setSelectedElements((prev) => prev.filter((existingItem) => existingItem.id !== item.id));
+      setSelectedElements((prev) =>
+        prev.filter((existingItem) => existingItem.id !== item.id)
+      );
     } else {
       setSelectedElements((prev) => [...prev, item]);
     }
@@ -103,8 +118,16 @@ export default function Connection({ id }) {
     newItems.push(item);
     setSelectedElements([...newItems]);
 
-    const updatedItems = items.map((existingItem) => (existingItem.id === deselectedItem.id ? { ...existingItem, selected: false } : existingItem));
-    const removedUpdatedItems = updatedItems.map((existingItem) => (existingItem.id === item.id ? { ...existingItem, selected: true } : existingItem));
+    const updatedItems = items.map((existingItem) =>
+      existingItem.id === deselectedItem.id
+        ? { ...existingItem, selected: false }
+        : existingItem
+    );
+    const removedUpdatedItems = updatedItems.map((existingItem) =>
+      existingItem.id === item.id
+        ? { ...existingItem, selected: true }
+        : existingItem
+    );
 
     setItems(removedUpdatedItems);
   }
@@ -117,12 +140,23 @@ export default function Connection({ id }) {
       title: "Jak hrát?",
       html: (
         <div id="help-modal">
-          <p> Najdětě skupiny po čtyřech slovech, které spolu nějakým způsobem souvisí.</p>
+          <p>
+            {" "}
+            Najdětě skupiny po čtyřech slovech, které spolu nějakým způsobem
+            souvisí.
+          </p>
           <p> Kliknutím vyberete jednotlivé položky.</p>
           <p> Zmáčkněte tlačítko "Odeslat" pro zkontrolování kategorie.</p>
           <h5> Kategorie </h5>
-          <p> Každá kategorie má svojí barvu znázorňující obtížnost uhádnutí.</p>
-          <p> Těžká kategorie často obsahuje odkazy na pojmy z filmů, kultury, fráze či velmi specifické pojmy.</p>
+          <p>
+            {" "}
+            Každá kategorie má svojí barvu znázorňující obtížnost uhádnutí.
+          </p>
+          <p>
+            {" "}
+            Těžká kategorie často obsahuje odkazy na pojmy z filmů, kultury,
+            fráze či velmi specifické pojmy.
+          </p>
           <div className="help-modal__category">
             <div className="--yellow help-modal__color"></div>
             <span class="help-modal__text">Jednoduchá</span>
@@ -141,7 +175,10 @@ export default function Connection({ id }) {
           </div>
           <h5> Příklady kategorie </h5>
           <p> Jednoduchá - MADAM, NEPOCHOPEN, KAJAK, KRK (Palindromy).</p>
-          <p> Velmi těžká - DRN, OBRAZ, TLAK, VLIV (Pod čím člověk může být).</p>
+          <p>
+            {" "}
+            Velmi těžká - DRN, OBRAZ, TLAK, VLIV (Pod čím člověk může být).
+          </p>
         </div>
       ),
     });
@@ -164,7 +201,9 @@ export default function Connection({ id }) {
    * Funkce na threshold
    */
   function wait(ms) {
-    return new Promise((resolve) => timeouts.current.push(setTimeout(resolve, ms)));
+    return new Promise((resolve) =>
+      timeouts.current.push(setTimeout(resolve, ms))
+    );
   }
 
   /**
@@ -176,10 +215,15 @@ export default function Connection({ id }) {
     const selectedItems = items.filter((item) => item.selected);
 
     //Následně si vytvořím pole těch, které selectnuté nebyly
-    const remainingItems = items.filter((item) => !selectedItems.includes(item));
+    const remainingItems = items.filter(
+      (item) => !selectedItems.includes(item)
+    );
 
     // A posadím selectnuté prvky na vršek tabulky
-    const newItems = [...selectedItems, ...remainingItems.slice(0, items.length - selectedItems.length)];
+    const newItems = [
+      ...selectedItems,
+      ...remainingItems.slice(0, items.length - selectedItems.length),
+    ];
 
     // Nastavím prvky kvůli provedení animace, aby se posunuli na vršek
     setItems(newItems);
@@ -192,12 +236,18 @@ export default function Connection({ id }) {
       item.selected = false;
     });
 
-    setSolvedCategories((prev) => [...prev, groups.current.find((group) => group.id === selectedItems[0].group)]);
+    setSolvedCategories((prev) => [
+      ...prev,
+      groups.current.find((group) => group.id === selectedItems[0].group),
+    ]);
 
     setSelectedElements([]);
 
     // A posadím selectnuté prvky na vršek tabulky
-    const newItemsAfterAnimation = [...selectedItems, ...remainingItems.slice(0, items.length - selectedItems.length)];
+    const newItemsAfterAnimation = [
+      ...selectedItems,
+      ...remainingItems.slice(0, items.length - selectedItems.length),
+    ];
 
     return setItems(newItemsAfterAnimation);
   };
@@ -211,7 +261,14 @@ export default function Connection({ id }) {
     if (selectedItems.length != 4) return;
 
     /* Kontrola již uhádnutých pokusů */
-    if (tries.current.some((pole) => JSON.stringify(pole) === JSON.stringify(selectedItems.map((item) => item.id).sort()))) return setErrorMessage("Již zkoušeno");
+    if (
+      tries.current.some(
+        (pole) =>
+          JSON.stringify(pole) ===
+          JSON.stringify(selectedItems.map((item) => item.id).sort())
+      )
+    )
+      return setErrorMessage("Již zkoušeno");
 
     /* Kontrola správného uhádnutí */
 
@@ -254,12 +311,15 @@ export default function Connection({ id }) {
       return setErrorMessage("Tak blízko...");
     }
 
-    if (selectedItems.every((item) => item.group === selectedItems[0].group)) return await removeItemsFromList();
+    if (selectedItems.every((item) => item.group === selectedItems[0].group))
+      return await removeItemsFromList();
 
     for (let i = 0; i < selectedItems.length; i++) {
       const item = document.getElementById(selectedItems[i].id);
       item.classList.add("shake");
-      timeouts.current.push(setTimeout(() => item.classList.remove("shake"), 400));
+      timeouts.current.push(
+        setTimeout(() => item.classList.remove("shake"), 400)
+      );
     }
     setLives((prev) => prev - 1);
     return setErrorMessage("Samá voda...");
@@ -268,16 +328,22 @@ export default function Connection({ id }) {
   const solveAll = async () => {
     items.forEach((selectedItem) => (selectedItem.selected = false));
     for (const group of [0, 1, 2, 3]) {
-      if (!items.find((item) => item.group == group && item.solved == false)) continue;
+      if (!items.find((item) => item.group == group && item.solved == false))
+        continue;
 
-      items.filter((item) => item.group == group).forEach((selectedItem) => (selectedItem.selected = true));
+      items
+        .filter((item) => item.group == group)
+        .forEach((selectedItem) => (selectedItem.selected = true));
       await submitCategory();
     }
   };
 
   return (
     !loading && (
-      <div id="single-connection" style={{ backgroundColor: data?.settings?.color }}>
+      <div
+        id="single-connection"
+        style={{ backgroundColor: data?.settings?.color }}
+      >
         <ConfettiCanvas isActive={solved} />
         <ErrorMessage statusMsg={errorMessage} setFunc={setErrorMessage} />
         {status === "error" && <p>Chyba :(</p>}
@@ -287,19 +353,31 @@ export default function Connection({ id }) {
             <LuHelpCircle className="help-icon" onClick={() => showModal()} />
             <h2>
               {" "}
-              {data.creator} <LuHelpCircle className="help-icon2" onClick={() => showModal()} />{" "}
+              {data.creator}{" "}
+              <LuHelpCircle
+                className="help-icon2"
+                onClick={() => showModal()}
+              />{" "}
             </h2>
             <h4> {data.date} </h4>
             <div className="board-container">
               <div className="solvedCategories">
                 {solvedCategories.map((group) => {
                   return (
-                    <div key={group.id} className={"solvedCategory --" + color_classes[group.id]}>
-                      <h3 className="solvedCategory-heading">{group.explanation.toUpperCase()}</h3>
+                    <div
+                      key={group.id}
+                      className={"solvedCategory --" + color_classes[group.id]}
+                    >
+                      <h3 className="solvedCategory-heading">
+                        {group.explanation.toUpperCase()}
+                      </h3>
                       <div className="solvedCategory-items">
                         <p>
                           {group.items.map((item, key) => (
-                            <span key={key} className="solvedCategory-items-single">
+                            <span
+                              key={key}
+                              className="solvedCategory-items-single"
+                            >
                               {item.toUpperCase()}
                             </span>
                           ))}
@@ -314,7 +392,15 @@ export default function Connection({ id }) {
                   .filter((item) => !item.solved)
                   .map((item) => {
                     return (
-                      <label onClick={() => insertIntoSelectedElements(item)} className={"board-item " + (item.selected === true ? "selected" : "")} key={item.id} id={item.id}>
+                      <label
+                        onClick={() => insertIntoSelectedElements(item)}
+                        className={
+                          "board-item " +
+                          (item.selected === true ? "selected" : "")
+                        }
+                        key={item.id}
+                        id={item.id}
+                      >
                         <p>{item.item}</p>
                       </label>
                     );
@@ -330,10 +416,14 @@ export default function Connection({ id }) {
               {shouldShowButtons == true && (
                 <>
                   <div>
-                    <button onClick={() => zamichatPole(items)}> Zamíchat </button>
+                    <button onClick={() => zamichatPole(items)}>
+                      {" "}
+                      Zamíchat{" "}
+                    </button>
                     <button
                       onClick={() => {
-                        if (items.filter((item) => item.selected).length === 4) submitCategory();
+                        if (items.filter((item) => item.selected).length === 4)
+                          submitCategory();
                       }}
                     >
                       Odeslat

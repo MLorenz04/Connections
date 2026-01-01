@@ -28,11 +28,16 @@ export default function CreateConnection({ id }) {
       const inputs = element.getElementsByTagName("input");
       groups.push({
         explanation: inputs[0].value,
-        items: [inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value],
+        items: [
+          inputs[1].value,
+          inputs[2].value,
+          inputs[3].value,
+          inputs[4].value,
+        ],
       });
     }
     await axios
-      .post(`${config.BASE_URL}/api/connection/`, {
+      .post(`${config.BASE_URL}/api/connections/`, {
         groups: groups,
         settings: settings,
       })
@@ -52,14 +57,20 @@ export default function CreateConnection({ id }) {
   };
 
   return (
-    <div className="create-connection" style={{ backgroundColor: settings.color }}>
+    <div
+      className="create-connection"
+      style={{ backgroundColor: settings.color }}
+    >
       <h1> Vytvořit </h1>
       <div className="create-connection__container">
         <div className="create-connection__settings">
           <div className="create-connection__settings__options">
             <div>
               <label for="jmeno">Jméno autora</label>
-              <input type="text" onChange={(e) => changeSettings("username", e.target.value)}></input>
+              <input
+                type="text"
+                onChange={(e) => changeSettings("username", e.target.value)}
+              ></input>
             </div>
             <div>
               <label>
@@ -67,7 +78,18 @@ export default function CreateConnection({ id }) {
                 <GithubPicker
                   width={"170px"}
                   triangle={"hide"}
-                  colors={["#fff", "#fabf96", "#EB9694", "#FAD0C3", "#FEF3BD", "#C1E1C5", "#BEDADC", "#C4DEF6", "#BED3F3", "#D4C4FB"]}
+                  colors={[
+                    "#fff",
+                    "#fabf96",
+                    "#EB9694",
+                    "#FAD0C3",
+                    "#FEF3BD",
+                    "#C1E1C5",
+                    "#BEDADC",
+                    "#C4DEF6",
+                    "#BED3F3",
+                    "#D4C4FB",
+                  ]}
                   onChange={(e) => changeSettings("color", e.hex)}
                 />
               </label>{" "}
