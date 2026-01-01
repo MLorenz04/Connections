@@ -44,7 +44,7 @@ export default function CreateConnection({ id }) {
       .then((results) => {
         Swal.fire({
           title: "Úspěšně vytvořeno",
-          html: `Odkaz: http://localhost:3000/connection/${results.data}`,
+          html: `Odkaz: ${config.BASE_URL}/connection/${results.data}`,
         });
       })
       .catch((err) => {
