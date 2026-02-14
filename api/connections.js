@@ -35,8 +35,6 @@ export default async function handler(req, res) {
 
             if (connError || !connection) return null;
 
-            console.log(connectionId);
-
             // fetch groups pro tuto connection, seřazeno podle position
             const { data: groups, error: groupsError } = await supabase
                 .from("groups")
@@ -93,7 +91,6 @@ export default async function handler(req, res) {
             // fetch connection + groups
             const connectionData = await fetchConnectionWithGroups(connectionId);
 
-            console.log(connectionData);
             if (!connectionData) return res.status(404).send("Connection nenalezena");
 
             return res.status(200).json(connectionData);

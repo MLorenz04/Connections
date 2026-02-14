@@ -34,7 +34,6 @@ export default function Connection({ id }) {
   const randomNumber = params.get("number_of_random");
 
   useEffect(() => {
-    console.log(randomNumber);
     setModes([...color_classes, "select"]);
     setCurrentItemModes([]);
     setCurrentSelectMode("select");
@@ -51,14 +50,13 @@ export default function Connection({ id }) {
     };
 
     fetchConnection();
-    console.log("Now?");
   }, [location.pathname, randomNumber]);
 
   /**
    * Počítání životů
    */
   useEffect(() => {
-    if (lives == 0) {
+    if (lives === 0) {
       setShouldShowButtons(false);
       setErrorMessage("Tak snad příště!");
       solveAll();
@@ -79,7 +77,7 @@ export default function Connection({ id }) {
    * Základní load dat
    */
   useEffect(() => {
-    if (data == undefined) return;
+    if (data === undefined) return;
     const date = new Date(data.date);
     data.date = `${date.getDate()}. ${
       date.getMonth() + 1
@@ -136,7 +134,7 @@ export default function Connection({ id }) {
         return changeElements(item);
     const selectedItem = copy.find((single_item) => single_item === item);
     selectedItem.selected = !selectedItem.selected;
-    if (selectedElements.find((existingItem) => existingItem.id == item.id)) {
+    if (selectedElements.find((existingItem) => existingItem.id === item.id)) {
       setSelectedElements((prev) =>
         prev.filter((existingItem) => existingItem.id !== item.id)
       );
@@ -356,7 +354,7 @@ export default function Connection({ id }) {
       return counts;
     }, {});
 
-    if (Object.values(valueCounts).some((count) => count == 3)) {
+    if (Object.values(valueCounts).some((count) => count === 3)) {
       setLives((prev) => prev - 1);
       return setErrorMessage("Tak blízko...");
     }
@@ -378,11 +376,11 @@ export default function Connection({ id }) {
   const solveAll = async () => {
     items.forEach((selectedItem) => (selectedItem.selected = false));
     for (const group of [0, 1, 2, 3]) {
-      if (!items.find((item) => item.group == group && item.solved == false))
+      if (!items.find((item) => item.group === group && item.solved === false))
         continue;
 
       items
-        .filter((item) => item.group == group)
+        .filter((item) => item.group === group)
         .forEach((selectedItem) => (selectedItem.selected = true));
       await submitCategory();
     }
@@ -457,7 +455,7 @@ export default function Connection({ id }) {
                       >
                         <div className="tile-modes">
                           {currentItemModes
-                            .find((i) => i.item_id == item.id)
+                            .find((i) => i.item_id === item.id)
                             .item_modes.map((mode) => (
                               <span
                                 key={mode}
@@ -486,7 +484,7 @@ export default function Connection({ id }) {
               ))}
             </div>
             <section id="buttons">
-              {shouldShowButtons == true && (
+              {shouldShowButtons === true && (
                 <>
                   <div>
                     <button onClick={() => zamichatPole(items)}>

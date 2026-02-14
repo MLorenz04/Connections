@@ -15,10 +15,6 @@ import ConnectionList from "./Components/ConnectionList/ConnectionList";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-const randomGen = () => {
-  console.log("test");
-};
-
 const queryClient = new QueryClient();
 root.render(
   <QueryClientProvider client={queryClient}>

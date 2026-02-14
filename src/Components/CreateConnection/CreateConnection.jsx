@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import CreateCategory from "./Components/CreateCategory";
 import "./createConnection.css";
 import { GithubPicker } from "react-color";
@@ -7,7 +7,6 @@ import config from "../../config/config";
 import Swal from "sweetalert2";
 
 export default function CreateConnection({ id }) {
-  const createdCategories = useState([]);
   const [settings, setSettings] = useState({
     username: "",
     color: "#ffffff",
@@ -48,7 +47,6 @@ export default function CreateConnection({ id }) {
         });
       })
       .catch((err) => {
-        console.log(err);
         Swal.fire({
           title: "Vyskytl se problém",
           html: err.response.data,
