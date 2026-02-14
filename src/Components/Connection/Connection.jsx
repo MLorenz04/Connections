@@ -473,14 +473,23 @@ export default function Connection({ id }) {
               {modes.length > 1 &&
                 modes.map((mode) => (
                   <div
-                    className={`mode --${mode} ${mode === currentSelectMode ? "--selected" : ""}`}
+                    className={`mode`}
                     onClick={() => setCurrentSelectMode(mode)}
-                  ></div>
+                  >
+                    <div
+                      className={`mode__color --${mode} ${mode === currentSelectMode ? "--selected" : ""}`}
+                    >
+                      {" "}
+                    </div>
+                  </div>
                 ))}
             </div>
             <div className="lives">
               {[...Array(lives)].map((e, i) => (
-                <div className="life" key={i} />
+                <div className="life" key={i}>
+                  {""}
+                  {"🫀"}
+                </div>
               ))}
             </div>
             <section id="buttons">
@@ -499,8 +508,8 @@ export default function Connection({ id }) {
                     >
                       Odeslat
                     </button>
+                    <button onClick={() => setLives(0)}> Vyřešit </button>
                   </div>
-                  <button onClick={() => setLives(0)}> Vyřešit </button>
                 </>
               )}
             </section>

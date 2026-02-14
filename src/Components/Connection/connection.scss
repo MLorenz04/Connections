@@ -59,7 +59,9 @@
     }
 
     &-item {
-      transition: background-color 0.275s, color 0.275s;
+      transition:
+        background-color 0.275s,
+        color 0.275s;
       width: 150px;
       height: 80px;
       background-color: rgb(239, 239, 230);
@@ -131,10 +133,10 @@
     gap: 1rem;
 
     button {
-      width: 7.5rem;
+      width: 5.5rem;
       height: 3rem;
       padding: 0.75rem;
-      margin: 0 1rem;
+      margin: 0 0.5rem;
 
       &:hover {
         background-color: rgb(220, 217, 217);
@@ -151,11 +153,8 @@
     justify-content: center;
     margin-bottom: 1rem;
     .life {
-      margin: 0 1rem;
-      width: 1rem;
-      height: 1rem;
-      border-radius: 0.5rem;
-      background-color: rgb(36, 36, 36);
+      margin: 0 0.5rem;
+      font-size: 2rem;
     }
   }
 
@@ -216,36 +215,39 @@
   }
 
   .tile-modes {
-    display:flex;
-    position:absolute;
+    display: flex;
+    position: absolute;
     top: 0.25rem;
   }
 
   .tile-mode {
-    display:block;
+    display: block;
     width: 0.75rem;
     height: 0.75rem;
     margin: 0rem 0.125rem;
-    border-radius:1rem;
+    border-radius: 1rem;
 
-     @media screen and (max-width: 650px) {
-    width: 0.5rem;
-    height: 0.5rem;
+    @media screen and (max-width: 650px) {
+      width: 0.5rem;
+      height: 0.5rem;
     }
-
   }
 
-
   .modes {
-    display:flex;
-    width:100%;
+    display: flex;
+    width: 100%;
     justify-content: center;
     margin-bottom: 1rem;
 
     .mode {
-      width: 2rem;
-      height: 2rem;
-      margin: 0 0.5rem;
+      padding: 0.5rem 0.5rem;
+      width: 1.6rem;
+      height: 1.6rem;
+      &__color {
+        border-radius: 1rem;
+        width: 1.6rem;
+        height: 1.6rem;
+      }
     }
   }
 }
@@ -263,7 +265,7 @@
   background-color: rgb(176, 196, 239);
 }
 .--selected {
-  border:2px solid black;
+  border: 2px solid black;
 }
 .--select {
   background-color: black;
@@ -329,6 +331,7 @@
   height: 2rem;
   width: 2rem;
   margin-top: 1.5rem;
+  z-index: 2;
   cursor: pointer;
 
   @media screen and (max-width: 650px) {
