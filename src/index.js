@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import WelcomePage from "./Components/WelcomePage/WelcomePage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import SingleConnection from "./Components/SingleConnection/SingleConnection";
@@ -11,6 +11,7 @@ import Navbar from "./Components/Navbar/Navbar";
 import "./App.css";
 import DailyConnection from "./Components/DailyConnection/DailyConnection";
 import RandomConnection from "./Components/RandomConnection/RandomConnection";
+import ConnectionList from "./Components/ConnectionList/ConnectionList";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -22,16 +23,15 @@ const queryClient = new QueryClient();
 root.render(
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
-      <React.StrictMode>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<WelcomePage />} />
-          <Route path="/connection/random" element={<RandomConnection />} />
-          <Route path="/connection/daily" element={<DailyConnection />} />
-          <Route path="/connection/:id" element={<SingleConnection />} />
-          <Route path="/create" element={<CreateConnection />}></Route>
-        </Routes>
-      </React.StrictMode>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<WelcomePage />} />
+        <Route path="/connection/random" element={<RandomConnection />} />
+        <Route path="/connection/daily" element={<DailyConnection />} />
+        <Route path="/connection/list" element={<ConnectionList />} />
+        <Route path="/connection/:id" element={<SingleConnection />} />
+        <Route path="/create" element={<CreateConnection />}></Route>
+      </Routes>
     </BrowserRouter>
   </QueryClientProvider>
 );

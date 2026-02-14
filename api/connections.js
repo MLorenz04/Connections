@@ -113,6 +113,19 @@ export default async function handler(req, res) {
             return res.status(200).json(connectionData);
         }
 
+        if (id === "list") {
+            const { data, error } = await supabase
+                .from("connection")
+                .select("id, creator, date, color")
+                .order("date", { ascending: false });
+
+            if (error) {
+                return res.status(500).send("Chyba při načítání seznamu");
+            }
+
+            return res.status(200).json(data);
+        }
+
         // GET /api/connection?id=...
         if (id) {
             const connectionData = await fetchConnectionWithGroups(id);

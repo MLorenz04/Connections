@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useQuery } from "react-query";
 import config from "../../config/config";
 import "./connection.css";
 import { useEffect, useRef, useState } from "react";
@@ -9,6 +8,7 @@ import ConfettiCanvas from "./components/ConfetetiCanvas";
 import Swal from "sweetalert2";
 import { LuHelpCircle } from "react-icons/lu";
 import withReactContent from "sweetalert2-react-content";
+import { useLocation } from "react-router-dom";
 
 export default function Connection({ id }) {
   const timeouts = useRef([]);
@@ -23,20 +23,36 @@ export default function Connection({ id }) {
   const [solved, setSolved] = useState(false);
   const [shouldShowButtons, setShouldShowButtons] = useState(true);
   const [selectedElements, setSelectedElements] = useState([]);
-
+  const [modes, setModes] = useState([...color_classes, "select"]);
+  const [currentSelectMode, setCurrentSelectMode] = useState("select");
   const [errorMessage, setErrorMessage] = useState(".");
+  const [currentItemModes, setCurrentItemModes] = useState([]);
+  const [data, set_data] = useState(undefined);
 
-  console.log(id);
-  const fetchConnection = async () => {
-    const res = await axios.get(`${config.BASE_URL}/api/connections`, {
-      params: { id },
-    });
-    return res.data;
-  };
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const randomNumber = params.get("number_of_random");
 
-  const { data, status } = useQuery(["connection", id], fetchConnection, {
-    refetchOnWindowFocus: false,
-  });
+  useEffect(() => {
+    console.log(randomNumber);
+    setModes([...color_classes, "select"]);
+    setCurrentItemModes([]);
+    setCurrentSelectMode("select");
+    setLives(4);
+    setItems([]);
+    setLoading(true);
+    groups.current = [];
+
+    const fetchConnection = async () => {
+      const res = await axios.get(`${config.BASE_URL}/api/connections`, {
+        params: { id },
+      });
+      set_data(res.data);
+    };
+
+    fetchConnection();
+    console.log("Now?");
+  }, [location.pathname, randomNumber]);
 
   /**
    * Počítání životů
@@ -67,7 +83,7 @@ export default function Connection({ id }) {
     const date = new Date(data.date);
     data.date = `${date.getDate()}. ${
       date.getMonth() + 1
-    }. ${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}`;
+    }. ${date.getFullYear()}, ${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
     let allItems = [];
     let id = 1;
     data.groups.forEach((group, index) => {
@@ -78,6 +94,7 @@ export default function Connection({ id }) {
           id: id,
           selected: false,
           group: index,
+          color_mode: color_classes[index],
           solved: false,
         });
         id += 1;
@@ -85,6 +102,10 @@ export default function Connection({ id }) {
     });
 
     zamichatPole(allItems);
+
+    setCurrentItemModes(
+      allItems.map((item) => ({ item_id: item.id, item_modes: [] }))
+    );
     setLoading(false);
   }, [data]);
 
@@ -93,6 +114,22 @@ export default function Connection({ id }) {
    * @param {*} item Prvek
    */
   const insertIntoSelectedElements = (item) => {
+    if (currentSelectMode !== "select") {
+      return setCurrentItemModes((prev) =>
+        prev.map((i) => {
+          if (i.item_id !== item.id) return i;
+
+          const exists = i.item_modes.includes(currentSelectMode);
+
+          return {
+            ...i,
+            item_modes: exists
+              ? i.item_modes.filter((m) => m !== currentSelectMode)
+              : [...i.item_modes, currentSelectMode],
+          };
+        })
+      );
+    }
     const copy = [...items];
     if (item.selected === false)
       if (copy.filter((obj) => obj.selected === true).length === 4)
@@ -249,6 +286,19 @@ export default function Connection({ id }) {
       ...remainingItems.slice(0, items.length - selectedItems.length),
     ];
 
+    setModes((prev) => [
+      ...prev.filter((item) => item !== selectedItems[0].color_mode),
+    ]);
+
+    setCurrentItemModes((prev) =>
+      prev.map((item) => ({
+        ...item,
+        item_modes: item.item_modes.filter(
+          (mode) => mode !== selectedItems[0].color_mode
+        ),
+      }))
+    );
+
     return setItems(newItemsAfterAnimation);
   };
 
@@ -338,6 +388,12 @@ export default function Connection({ id }) {
     }
   };
 
+  if (loading)
+    return (
+      <div>
+        <h2 style={{ textAlign: "center" }}> Načítání ... </h2>
+      </div>
+    );
   return (
     !loading && (
       <div
@@ -346,9 +402,8 @@ export default function Connection({ id }) {
       >
         <ConfettiCanvas isActive={solved} />
         <ErrorMessage statusMsg={errorMessage} setFunc={setErrorMessage} />
-        {status === "error" && <p>Chyba :(</p>}
-        {status === "loading" && <p>Načítání...</p>}
-        {status === "success" && (
+        {!data && <p>Načítání...</p>}
+        {data && (
           <div id="single-connection__container">
             <LuHelpCircle className="help-icon" onClick={() => showModal()} />
             <h2>
@@ -395,17 +450,35 @@ export default function Connection({ id }) {
                       <label
                         onClick={() => insertIntoSelectedElements(item)}
                         className={
-                          "board-item " +
-                          (item.selected === true ? "selected" : "")
+                          "board-item " + (item.selected ? "selected" : "")
                         }
                         key={item.id}
                         id={item.id}
                       >
+                        <div className="tile-modes">
+                          {currentItemModes
+                            .find((i) => i.item_id == item.id)
+                            .item_modes.map((mode) => (
+                              <span
+                                key={mode}
+                                className={"tile-mode --" + mode}
+                              ></span>
+                            ))}
+                        </div>
                         <p>{item.item}</p>
                       </label>
                     );
                   })}
               </FlipMove>
+            </div>
+            <div className="modes">
+              {modes.length > 1 &&
+                modes.map((mode) => (
+                  <div
+                    className={`mode --${mode} ${mode === currentSelectMode ? "--selected" : ""}`}
+                    onClick={() => setCurrentSelectMode(mode)}
+                  ></div>
+                ))}
             </div>
             <div className="lives">
               {[...Array(lives)].map((e, i) => (

@@ -1,0 +1,104 @@
+/* connectionList.css */
+
+#connection-list {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+#connection-list table {
+    width: 100%;
+    max-width: 900px;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#connection-list thead {
+    background-color: #4f46e5; /* pěkná modro-fialová barva */
+    color: #fff;
+}
+
+#connection-list thead th {
+    text-align: left;
+    padding: 1rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+#connection-list tbody tr {
+    border-bottom: 1px solid #e5e7eb; /* světle šedé oddělení řádků */
+    transition: background-color 0.2s ease;
+}
+
+#connection-list tbody tr:hover {
+    background-color: #f3f4f6; /* jemný hover efekt */
+}
+
+#connection-list tbody td {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+#connection-list tbody td div {
+    border-radius: 5px;
+    border: 1px solid #d1d5db;
+}
+
+#connection-list tbody td a {
+    text-decoration: none;
+    color: #4f46e5;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+#connection-list tbody td a:hover {
+    color: #3730a3;
+    text-decoration: underline;
+}
+
+/* Alternating row colors */
+#connection-list tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    #connection-list table,
+    #connection-list thead,
+    #connection-list tbody,
+    #connection-list th,
+    #connection-list td,
+    #connection-list tr {
+        display: block;
+    }
+
+    #connection-list thead {
+        display: none;
+    }
+
+    #connection-list tbody td {
+        position: relative;
+        padding-left: 50%;
+        text-align: left;
+    }
+
+    #connection-list tbody td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-weight: 600;
+        color: #6b7280;
+    }
+
+    #connection-list tbody td div {
+        margin: 0.2rem 0;
+    }
+}

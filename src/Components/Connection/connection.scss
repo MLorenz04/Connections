@@ -214,6 +214,40 @@
       margin-bottom: 0.5rem;
     }
   }
+
+  .tile-modes {
+    display:flex;
+    position:absolute;
+    top: 0.25rem;
+  }
+
+  .tile-mode {
+    display:block;
+    width: 0.75rem;
+    height: 0.75rem;
+    margin: 0rem 0.125rem;
+    border-radius:1rem;
+
+     @media screen and (max-width: 650px) {
+    width: 0.5rem;
+    height: 0.5rem;
+    }
+
+  }
+
+
+  .modes {
+    display:flex;
+    width:100%;
+    justify-content: center;
+    margin-bottom: 1rem;
+
+    .mode {
+      width: 2rem;
+      height: 2rem;
+      margin: 0 0.5rem;
+    }
+  }
 }
 
 .--green {
@@ -228,7 +262,12 @@
 .--blue {
   background-color: rgb(176, 196, 239);
 }
-
+.--selected {
+  border:2px solid black;
+}
+.--select {
+  background-color: black;
+}
 /* Animations */
 
 @keyframes jumpUp {
@@ -320,8 +359,6 @@
     font-size: 0.9rem;
     text-align: left;
     display: inline;
-  }
-  &__heading {
   }
 }
 #help-modal {
