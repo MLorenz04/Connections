@@ -33,28 +33,22 @@ export default function ConnectionList() {
             <tr>
               <th>Datum</th>
               <th>Autor </th>
-              <th>Barva</th>
               <th>Odkaz</th>
             </tr>
           </thead>
           <tbody>
             {data.map((item) => (
-              <tr>
+              <tr
+                style={{
+                  backgroundColor: item.color,
+                }}
+              >
                 <td>
                   {`${new Date(item.date).getDate()}. ${
                     new Date(item.date).getMonth() + 1
                   }. ${new Date(item.date).getFullYear()}, ${new Date(item.date).getHours().toString().padStart(2, "0")}:${new Date(item.date).getMinutes().toString().padStart(2, "0")}`}
                 </td>
                 <td>{item.creator}</td>
-                <td>
-                  <div
-                    style={{
-                      backgroundColor: item.color,
-                      width: "2rem",
-                      height: "2rem",
-                    }}
-                  ></div>
-                </td>
                 <td>
                   <Link to={`/connection/${item.id}`}>Odkaz</Link>
                 </td>
